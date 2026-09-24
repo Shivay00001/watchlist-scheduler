@@ -2,3 +2,4 @@
 schedule
 requests
 python-dotenv
+beautifulsoup4

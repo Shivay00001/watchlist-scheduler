@@ -48,3 +48,25 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## 📝 License
 
 This project is licensed under standard terms.
+
+---
+
+## 🔧 Wave-1 fix notes (2026-09-24)
+
+- **Fixed import:** `watchlist_scheduler.py` imported `auto_bounty_orchestrator`
+  (`PassiveRecon`, `triage_findings`, `build_markdown_report`), which did not exist
+  anywhere in the repo. Created a **real implementation** in
+  `auto_bounty_orchestrator.py` — passive recon only (robots.txt, sitemap.xml, TLS
+  certificate handshake, polite same-domain crawl recording passive findings such as
+  exposed Server headers and leftover HTML comments), plus triage and a Markdown
+  report builder. Added `beautifulsoup4` to `requirements.txt`.
+- **Fixed Dockerfile:** `CMD` pointed at nonexistent `main.py`; now runs
+  `watchlist_scheduler.py`.
+- **Honest notifications:** the "Notification sent" message now only prints when a
+  channel actually fired; otherwise it says no channels are configured.
+- Verified 2026-09-24: `python watchlist_scheduler.py --run-now` scanned
+  `https://example.com` end-to-end (1 page visited, 2 findings triaged, state saved,
+  exit 0). Telegram/Slack not exercised (no tokens in sandbox — set
+  `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` or `SLACK_WEBHOOK_URL` in `.env`).
+- Usage: `python watchlist_scheduler.py --setup` (interactive), `--run-now` (one
+  scan), `--daemon` (daily at 03:00).

@@ -143,14 +143,21 @@ Top Findings:
             message += f"\n{i}. {finding.get('title')} - {finding.get('severity')}"
         
         # Send to Telegram
+        sent = []
         if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
             self.send_telegram(message)
-        
+            sent.append("telegram")
+
         # Send to Slack
         if SLACK_WEBHOOK_URL:
             self.send_slack(message)
-        
-        print(f"[+] Notification sent for {program['handle']}")
+            sent.append("slack")
+
+        if sent:
+            print(f"[+] Notification sent via {', '.join(sent)} for {program['handle']}")
+        else:
+            print(f"[!] No notification channels configured for {program['handle']} "
+                  f"(set TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID or SLACK_WEBHOOK_URL)")
     
     def send_telegram(self, message):
         """Send message via Telegram Bot"""

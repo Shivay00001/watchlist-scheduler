@@ -7,3 +7,8 @@ __pycache__/
 .vscode/
 build/
 .dart_tool/
+
+# runtime state
+watchlist.json
+scheduler_state.json
+watchlist_scheduler.log
